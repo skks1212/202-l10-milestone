@@ -7,6 +7,7 @@ redis==4.1.4  # https://github.com/redis/redis-py
 celery==5.2.3  # pyup: < 6.0  # https://github.com/celery/celery
 django-celery-beat==2.2.1  # https://github.com/celery/django-celery-beat
 django-filter==21.1
+drf-nested-routers==0.93.4
 
 # Django
 # ------------------------------------------------------------------------------
