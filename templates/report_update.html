@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Update Task{% endblock %} 
+
+{% block content %}
+    <div class="text-4xl font-bold">
+        Report Settings
+    </div>
+    <br>
+    <br>
+    <form method="post" class="tasks-form">
+        <p>
+            <label for="id_timing">At what hour would you like to recieve task reports?:</label>
+            <input type="number" name="timing" value="{{form.timing.value}}" min="0" max="23" class="p-3 bg-gray-200 rounded-xl block w-full my-2 text-base text-black" required id="id_timing">
+        </p>
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 block hover:bg-red-600 text-white rounded-xl p-3 text-base cursor-pointer transition w-full mt-4">
+            Update
+        </button>
+    </form>
+{% endblock %}

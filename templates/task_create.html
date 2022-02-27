@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Task{% endblock %} 
+
+{% block content %}
+    <div class="text-4xl font-bold">
+        Create Todo
+    </div>
+    <br>
+    <br>
+    <form method="post" class="tasks-form">
+        {{form.as_p}}
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 block hover:bg-red-600 text-white rounded-xl p-3 text-base cursor-pointer transition w-full mt-4">
+            Add
+        </button>
+    </form>
+{% endblock %}

@@ -1,3 +1,4 @@
+'''
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -6,7 +7,52 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
+'''
+from django.views import defaults as default_views
+from django.conf import settings
+from django.contrib import admin
+from django.urls import path, include
 
+from tasks.views import *
+from tasks.reports import * 
+
+from tasks.apiviews import *
+
+from django.contrib.auth.views import LogoutView
+
+from rest_framework.routers import SimpleRouter
+from rest_framework_nested import routers
+
+router = routers.SimpleRouter()
+
+router.register(r"api/task",TaskViewSet)
+
+history_router = routers.NestedSimpleRouter(router, r'api/task', lookup='task')
+history_router.register(r'history', TaskHistoryViewSet)
+
+router.register("api/history",TaskHistoryViewSet)
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+
+    path('', GenericTaskView.as_view()),
+
+    #user management
+    path('user/login', UserLoginView.as_view()),
+    path('user/signup', UserCreateView.as_view()),
+    path('user/logout', LogoutView.as_view()),
+    
+    #tasks
+    path('tasks',GenericTaskView.as_view()),
+    path('create-task', GenericTaskCreateView.as_view()),
+    path('update-task/<pk>', GenericTaskUpdateView.as_view()),
+    path('reports/<pk>', GenericReportUpdateView.as_view()),
+
+    path('delete-task/<pk>', GenericTaskDeleteView.as_view()),
+] + router.urls + history_router.urls
+
+
+'''
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path(
@@ -33,6 +79,8 @@ urlpatterns += [
         name="api-docs",
     ),
 ]
+
+'''
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
