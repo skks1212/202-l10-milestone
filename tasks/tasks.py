@@ -13,7 +13,7 @@ from config.celery_app import app
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     print('setting tasks')
-    sender.add_periodic_task(10.0, send_reports, name='Send Reports')
+    sender.add_periodic_task(3600.0, send_reports, name='Send Reports')
 
 @app.task
 def send_reports():
