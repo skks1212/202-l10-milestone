@@ -270,7 +270,7 @@ if USE_TZ:
     # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-timezone
     CELERY_TIMEZONE = TIME_ZONE
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-broker_url
-CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://shivank:3kQhL5EJlktI3wd8NpUKsoxiC4NkhAGC@redis-15237.c264.ap-south-1-1.ec2.cloud.redislabs.com:15237/0")
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://:3kQhL5EJlktI3wd8NpUKsoxiC4NkhAGC@redis-15237.c264.ap-south-1-1.ec2.cloud.redislabs.com:15237")
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-result_backend
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-accept_content
