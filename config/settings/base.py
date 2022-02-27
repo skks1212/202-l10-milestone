@@ -334,3 +334,5 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+LOGOUT_REDIRECT_URL = '/user/login'

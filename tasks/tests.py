@@ -1,10 +1,11 @@
 from django.test import TestCase, Client, RequestFactory, TestCase
-from .models import *
+from .models import Task, TaskHistory, Report, User
 from .views import GenericTaskView, UserCreateView
 from .tasks import *
 from unittest import mock
 
 from datetime import datetime, timezone
+
 
 class AuthenticationTests(TestCase):
     def test_authenticated(self):
@@ -15,14 +16,16 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, "user/login?next=/tasks")
 
+
+
 class ModelTests(TestCase):
     def setUp(self):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
-        self.user = User.objects.create_user(username="shivank", email="shivank@writeroo.in", password="helloworld")
+        self.user = User.objects.create(username="shivank", email="shivank@writeroo.in", password="helloworld")
 
     def test_task_model(self):
-        self.task_entry = Task(title="Simple Task", description="Sample", user = self.user)
+        self.task_entry = Task.objects.create(title="Simple Task", description="Sample", user = self.user)
         self.assertEqual(str(self.task_entry), self.task_entry.title)
 
     def test_taskhistory_model(self):
@@ -43,13 +46,15 @@ class ModelTests(TestCase):
 
         self.assertEqual(str(check_report), 'shivank : 0')
 
+
+
 class QuestionModelTests(TestCase):
     
     
     def setUp(self):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
-        self.user = User.objects.create_user(username="bruce_wayne", email="bruce@wayne.org", password="i_am_batman")
+        self.user = User.objects.create(username="bruce_wayne", email="bruce@wayne.org", password="i_am_batman")
 
     def test_authenticated(self):
         request = self.factory.get("/tasks")
@@ -66,8 +71,8 @@ class CronTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.users = []
-        self.users.append(User.objects.create_user(username="test1", email="1@test.com", password="test1"))
-        self.users.append(User.objects.create_user(username="test2", email="2@test.com", password="test2"))
+        self.users.append(User.objects.create(username="test1", email="1@test.com", password="test1"))
+        self.users.append(User.objects.create(username="test2", email="2@test.com", password="test2"))
 
         Report.objects.filter(user__username="test1").update(last_report=datetime.now(timezone.utc).replace(hour = 0) - timedelta(days=1))
         Report.objects.filter(user__username="test2").update(last_report=datetime.now(timezone.utc).replace(hour = 0) - timedelta(days=1))
@@ -80,8 +85,8 @@ class ViewTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.users = []
-        self.users.append(User.objects.create_user(username="test1", email="1@test.com", password="test1"))
-        self.users.append(User.objects.create_user(username="test2", email="2@test.com", password="test2"))
+        self.users.append(User.objects.create(username="test1", email="1@test.com", password="test1"))
+        self.users.append(User.objects.create(username="test2", email="2@test.com", password="test2"))
 
     def test_all_views(self):
         
@@ -123,12 +128,3 @@ class ViewTest(TestCase):
         
 
         self.assertEqual(get_old_task.priority, 1)
-
-        
-
-
-
-
-
-
-    

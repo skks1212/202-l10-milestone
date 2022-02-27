@@ -1,23 +1,21 @@
-#celery does not support the periodic task decorator anymore, so imporovised
-
+'''
 import datetime
 
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from tasks.models import *
+from tasks.models import Task, Report
 from datetime import timedelta, datetime, timezone
+
+from celery.decorators import periodic_task
 
 from celery import Celery
 
 from config.celery_app import app
 
-@app.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-    print('setting tasks')
-    sender.add_periodic_task(10.0, send_reports, name='Send Reports')
 
-@app.task
+
+@periodic_task(run_every=timedelta(hours=1))
 def send_reports():
-    print('Checking for reports to send')
     #reports that were not sent in 1 day
     get_unsent_reports = Report.objects.filter(last_report__lte = (datetime.now(timezone.utc) - timedelta(days=1)))
     
@@ -57,3 +55,4 @@ def send_reports():
         print(f"Completed Processing User {report.user.id}")
 
     return completed
+'''
